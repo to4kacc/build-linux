@@ -23,7 +23,7 @@ echo_item() { printf "${COLOR_CYAN}%-18s${COLOR_NC} %s\n" "${1}:" "${2}"; }
 
 check_param() {
 	local name="$1"
-	local value="${!name}"
+	local value="${name}"
 	if [ -z "$value" ]; then
 		echo "Missing Parameter [$name]"
 		exit 1
