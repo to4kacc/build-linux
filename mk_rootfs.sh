@@ -3,6 +3,7 @@
 set -euo pipefail
 
 SCRIPT_NAME="${0##*/}"
+WORKSPACE_PATH="${PWD}"
 # SCRIPT_PATH=$(cd "$(dirname "$0")"; pwd)
 # SCRIPT_PATH=`S=\`readlink "$0"\`; [ -z "$S" ] && S=$0; dirname $S`
 SCRIPT_PATH="$(dirname "$(readlink -f "$0")")"
@@ -26,11 +27,12 @@ init() {
 	HOST_ARCH="$(uname -m)"
 	XZ_DEFAULTS="-T 0"
 	MIRROR_URL="http://mirrors.ustc.edu.cn/debian/"
+	TARGET_FS=${WORKSPACE_PATH}/debian_${TARGET_VERSION}
 	# LC_ALL=en_US.UTF-8
 	# LANGUAGE=en_US.UTF-8
 	# LANG=en_US.UTF-8
-	DEBIAN_FRONTEND=noninteractive
-	DEBCONF_NONINTERACTIVE_SEEN=true
+	export DEBIAN_FRONTEND=noninteractive
+	export DEBCONF_NONINTERACTIVE_SEEN=true
 
 	if ! [[ ("$HOST_ARCH" == "aarch64" && "$ARCH" == "arm64") || ("${HOST_ARCH:0:3}" == "arm" && "$ARCH" == "arm") ]]; then
 		PKG_LIST+=" qemu-user-static"
@@ -46,21 +48,23 @@ build_info() {
 	echo_item "MIRROR_URL" "${MIRROR_URL}"
 }
 
+umount_proc() {
+	umount -l "${TARGET_FS}/dev/pts" 2>/dev/null || true
+	umount -l "${TARGET_FS}/dev" 2>/dev/null || true
+	umount -l "${TARGET_FS}/sys" 2>/dev/null || true
+	umount -l "${TARGET_FS}/proc" 2>/dev/null || true
+}
+
 mount_proc() {
+	umount_proc
 	mount -t proc /proc "${TARGET_FS}/proc"
 	mount -t sysfs /sys "${TARGET_FS}/sys"
 	mount --bind /dev "${TARGET_FS}/dev"
 	mount --bind /dev/pts "${TARGET_FS}/dev/pts"
 }
 
-umount_proc() {
-	umount "${TARGET_FS}/proc"
-	umount "${TARGET_FS}/sys"
-	umount "${TARGET_FS}/dev/pts"
-	umount "${TARGET_FS}/dev"
-}
-
 create_base_fs() {
+	trap umount_proc EXIT
 	check_dependency "${DEPENDENCY_LIST}"
 
 	if [[ -e "${TARGET_FS}" ]]; then
@@ -84,23 +88,32 @@ create_base_fs() {
 	fi
 
 	echo_info "Stage 2: second-stage debootstrap"
+	cat >"${TARGET_FS}/usr/sbin/policy-rc.d" <<'EOF'
+#!/bin/sh
+exit 101
+EOF
+	chmod +x "${TARGET_FS}/usr/sbin/policy-rc.d"
 	mount_proc
 	chroot "${TARGET_FS}" /debootstrap/debootstrap --second-stage
+	chroot "${TARGET_FS}" apt update
+	chroot "${TARGET_FS}" apt install -y debian-archive-keyring
 
 	echo_info "Configuring base system"
 	chroot "${TARGET_FS}" dpkg --configure -a
 
 	echo_info "Installing basic packages"
 	chroot "${TARGET_FS}" apt install -y sudo vim openssh-server bash-completion ca-certificates htop locales wget curl xz-utils bsdextrautils binutils file
-	umount_proc
 	# chroot ${TARGET_FS} apt install -y net-tools network-manager systemd-timesyncd wireless-regdb wpasupplicant iw wireless-tools zram-tools man-db
 	# chroot ${TARGET_FS} apt install -y network-manager modemmanager qrtr-tools rmtfs firmware-qcom-soc # For Qualcomm Device
 	# dpkg-reconfigure locales
+	umount_proc
+	rm "${TARGET_FS}/usr/sbin/policy-rc.d"
 
 	echo_info "Base rootfs build completed"
 }
 
 chroot_fs() {
+	trap umount_proc EXIT
 	check_dependency "${DEPENDENCY_LIST}"
 
 	if [[ ! -d "${TARGET_FS}" ]]; then
@@ -109,8 +122,14 @@ chroot_fs() {
 	fi
 
 	mount_proc
-	chroot "${TARGET_FS}"
+	cat >"${TARGET_FS}/usr/sbin/policy-rc.d" <<'EOF'
+#!/bin/sh
+exit 101
+EOF
+	chmod +x "${TARGET_FS}/usr/sbin/policy-rc.d"
+	chroot "${TARGET_FS}" /bin/bash
 	umount_proc
+	rm "${TARGET_FS}/usr/sbin/policy-rc.d"
 }
 
 archive_fs() {
@@ -120,10 +139,13 @@ archive_fs() {
 	fi
 
 	local pack_date="$(date +%Y%m%d_%H%M)"
-	local pack_name="${TARGET_FS}_${pack_date}.xz.tar"
+	local pack_name="${TARGET_FS}_${pack_date}.tar.xz"
 
 	echo_info "Archiving ${TARGET_FS} => ${pack_name}"
-	tar cJfp "${pack_name}" --exclude="usr/bin/qemu-${TARGET_ARCH}-static" -C "$(dirname "${TARGET_FS}")" "$(basename "${TARGET_FS}")"
+	tar cJfp "${pack_name}" \
+		--numeric-owner --xattrs --acls \
+		--exclude="usr/bin/qemu-${TARGET_ARCH}-static" \
+		-C "$(dirname "${TARGET_FS}")" "$(basename "${TARGET_FS}")"
 	echo_info "Archive completed"
 }
 
@@ -165,6 +187,7 @@ show_menu() {
 }
 
 main() {
+	trap umount_proc EXIT
 	init
 	build_info
 	show_menu
