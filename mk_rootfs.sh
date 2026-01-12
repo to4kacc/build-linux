@@ -102,10 +102,11 @@ EOF
 	chroot "${TARGET_FS}" dpkg --configure -a
 
 	echo_info "Installing basic packages"
-	chroot "${TARGET_FS}" apt install -y sudo vim openssh-server bash-completion ca-certificates htop locales wget curl xz-utils bsdextrautils binutils file
+	chroot "${TARGET_FS}" apt install -y sudo vim openssh-server bash-completion ca-certificates htop locales wget curl xz-utils bsdextrautils binutils file btrfs-progs dosfstools
 	# chroot ${TARGET_FS} apt install -y net-tools network-manager systemd-timesyncd wireless-regdb wpasupplicant iw wireless-tools zram-tools man-db
 	# chroot ${TARGET_FS} apt install -y network-manager modemmanager qrtr-tools rmtfs firmware-qcom-soc # For Qualcomm Device
 	# dpkg-reconfigure locales
+	chroot "${TARGET_FS}" ln -nfs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 	umount_proc
 	rm "${TARGET_FS}/usr/sbin/policy-rc.d"
 

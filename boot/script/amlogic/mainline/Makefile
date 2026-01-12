@@ -1,7 +1,7 @@
 .PHONY: emmc_scr tf_scr all clean
 
-SOURCE_EMMC=boot_emmc_*.cmd
-SOURCE_TF=boot_tf.cmd
+SOURCE_EMMC=boot_emmc*.cmd
+SOURCE_TF=boot_tf*.cmd
 
 all: emmc_scr tf_scr
 
