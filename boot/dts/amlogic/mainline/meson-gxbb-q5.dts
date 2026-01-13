@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: (GPL-2.0+ OR MIT)
 /dts-v1/;
 
+#include <dt-bindings/leds/common.h>
 #include "meson-gxbb-p20x.dtsi"
 
 / {
@@ -19,32 +20,34 @@
 	leds {
 		compatible = "gpio-leds";
 
-		led-power {
-			label = "power";
+		/*led-1 R|G led-2 B led-3 R&G*/
+		led-1-red-green {
+			label = "led-1-red-green";
+			color = <LED_COLOR_ID_RED>;
 			gpios = <&gpio_ao GPIOZ_13 GPIO_ACTIVE_LOW>;
 			default-state = "off";
 			panic-indicator;
 		};
 
-		led-red {
-			label = "red";
+		led-2-blue {
+			label = "led-2-blue";
+			color = <LED_COLOR_ID_BLUE>;
+			gpios = <&gpio GPIOY_13 GPIO_ACTIVE_LOW>;
+			linux,default-trigger = "timer";
+		};
+
+		led-3-red {
+			label = "led-3-red";
+			color = <LED_COLOR_ID_RED>;
 			gpios = <&gpio GPIOY_10 GPIO_ACTIVE_LOW>;
 			default-state = "off";
-			panic-indicator;
 		};
 
-		led-green {
-			label = "green";
+		led-3-green {
+			label = "led-3-green";
+			color = <LED_COLOR_ID_GREEN>;
 			gpios = <&gpio GPIOY_7 GPIO_ACTIVE_LOW>;
 			default-state = "off";
-			panic-indicator;
-		};
-
-		led-blue {
-			label = "blue";
-			gpios = <&gpio GPIOY_13 GPIO_ACTIVE_LOW>;
-			default-state = "off";
-			panic-indicator;
 		};
 	};
 };
