@@ -247,6 +247,7 @@ show_menu() {
 	echo_title "================ Menu Option ================"
 	echo_menu 0 " Install Required Packages"
 	echo_menu 1 " Use Default Config"
+	echo_menu 11 "└─ Use Old Default Config"
 	echo_menu 2 " Menu Config"
 	echo_menu 3 " Build All"
 	echo_menu 31 "├─ Build Kernel"
@@ -262,6 +263,7 @@ show_menu() {
 	case ${OPT} in
 	0) install_pkg "${PKG_LIST}" ;;
 	1) check_dependency "${DEPENDENCY_LIST}" && make ${DEFCONFIG} ${BUILD_ARGS} ;;
+	11) check_dependency "${DEPENDENCY_LIST}" && yes "" | make oldconfig ${BUILD_ARGS} ;;
 	2) check_dependency "${DEPENDENCY_LIST}" && make menuconfig ${BUILD_ARGS} ;;
 	3) build_kernel kernel && build_kernel modules && build_kernel dtbs ;;
 	31) build_kernel kernel ;;
