@@ -1,0 +1,55 @@
+来电自启    6 0x20
+看门狗      6 0x02
+RTC Alarm  6 0x01
+WOL        7 0x06(on)/0x04(off)
+
+
+
+启用来电自启动
+ ndroid.settings-763   [001] ....   869.861700: i2c_write: i2c-4 #0 a=015 f=0000 l=1 [06]
+ ndroid.settings-763   [001] ....   869.861708: i2c_read: i2c-4 #1 a=015 f=0001 l=1
+ ndroid.settings-763   [001] ....   869.862194: i2c_reply: i2c-4 #1 a=015 f=0001 l=1 [00]
+ ndroid.settings-763   [001] ....   869.862201: i2c_write: i2c-4 #0 a=015 f=0000 l=2 [06-20]
+
+禁用来电自启
+ ndroid.settings-763   [002] ....  1034.785601: i2c_write: i2c-4 #0 a=015 f=0000 l=1 [06]
+ ndroid.settings-763   [002] ....  1034.785609: i2c_read: i2c-4 #1 a=015 f=0001 l=1
+ ndroid.settings-763   [002] ....  1034.786098: i2c_reply: i2c-4 #1 a=015 f=0001 l=1 [20]
+ ndroid.settings-763   [002] ....  1034.786106: i2c_write: i2c-4 #0 a=015 f=0000 l=2 [06-00]
+
+看门狗on
+ ndroid.settings-763   [001] ....  1090.471477: i2c_write: i2c-4 #0 a=015 f=0000 l=1 [06]
+ ndroid.settings-763   [001] ....  1090.471485: i2c_read: i2c-4 #1 a=015 f=0001 l=1
+ ndroid.settings-763   [002] ....  1090.471982: i2c_reply: i2c-4 #1 a=015 f=0001 l=1 [00]
+ ndroid.settings-763   [002] ....  1090.472011: i2c_write: i2c-4 #0 a=015 f=0000 l=2 [06-02]
+
+看门狗off
+ ndroid.settings-763   [003] ....  1141.632673: i2c_write: i2c-4 #0 a=015 f=0000 l=1 [06]
+ ndroid.settings-763   [003] ....  1141.632681: i2c_read: i2c-4 #1 a=015 f=0001 l=1
+ ndroid.settings-763   [003] ....  1141.633746: i2c_reply: i2c-4 #1 a=015 f=0001 l=1 [02]
+ ndroid.settings-763   [003] ....  1141.633760: i2c_write: i2c-4 #0 a=015 f=0000 l=2 [06-00]
+
+RTC alarm on
+ ndroid.settings-763   [002] ....  1163.761730: i2c_write: i2c-4 #0 a=015 f=0000 l=1 [06]
+ ndroid.settings-763   [002] ....  1163.761734: i2c_read: i2c-4 #1 a=015 f=0001 l=1
+ ndroid.settings-763   [002] ....  1163.762295: i2c_reply: i2c-4 #1 a=015 f=0001 l=1 [00]
+ ndroid.settings-763   [002] ....  1163.762300: i2c_write: i2c-4 #0 a=015 f=0000 l=2 [06-01]
+
+RTC alarm off
+ ndroid.settings-763   [001] ....  1204.888898: i2c_write: i2c-4 #0 a=015 f=0000 l=1 [06]
+ ndroid.settings-763   [001] ....  1204.888913: i2c_read: i2c-4 #1 a=015 f=0001 l=1
+ ndroid.settings-763   [001] ....  1204.889415: i2c_reply: i2c-4 #1 a=015 f=0001 l=1 [01]
+ ndroid.settings-763   [001] ....  1204.889422: i2c_write: i2c-4 #0 a=015 f=0000 l=2 [06-00]
+
+WOL on
+ ndroid.settings-763   [002] ....  1271.505471: i2c_write: i2c-4 #0 a=015 f=0000 l=1 [07]
+ ndroid.settings-763   [002] ....  1271.505483: i2c_read: i2c-4 #1 a=015 f=0001 l=1
+ ndroid.settings-763   [002] ....  1271.505994: i2c_reply: i2c-4 #1 a=015 f=0001 l=1 [04]
+ ndroid.settings-763   [002] ....  1271.506007: i2c_write: i2c-4 #0 a=015 f=0000 l=2 [07-06]
+
+WOL off
+ ndroid.settings-763   [001] ....  1305.843254: i2c_write: i2c-4 #0 a=015 f=0000 l=1 [07]
+ ndroid.settings-763   [001] ....  1305.843263: i2c_read: i2c-4 #1 a=015 f=0001 l=1
+ ndroid.settings-763   [000] ....  1305.843767: i2c_reply: i2c-4 #1 a=015 f=0001 l=1 [06]
+ ndroid.settings-763   [000] ....  1305.843782: i2c_write: i2c-4 #0 a=015 f=0000 l=2 [07-04]
+

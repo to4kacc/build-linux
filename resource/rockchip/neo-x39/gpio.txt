@@ -1,0 +1,33 @@
+GPIOs 0-31, platform/pinctrl, gpio0:
+ gpio-4   (                    |bt_default_wake_host) in  lo    GPIO_0 RK_PA4
+ gpio-5   (                    |power               ) in  hi    GPIO_0 RK_PA5
+ gpio-8   (                    |power_hold_gpio     ) out hi    GPIO_0 RK_PB0
+ gpio-9   (                    |bt_default_reset    ) out lo    GPIO_0 RK_PB1
+ gpio-10  (                    |reset               ) out hi    GPIO_0 RK_PB2
+
+GPIOs 32-63, platform/pinctrl, gpio1:
+ gpio-32  (                    |mcu_inter_typec_pull) in  hi    GPIO_1 RK_PA0
+ gpio-33  (                    |mcu_watchdog_gpio   ) out hi    GPIO_1 RK_PA1
+ gpio-34  (                    |mcu_inter           ) in  hi    GPIO_1 RK_PA2
+ gpio-46  (                    |vsel                ) out lo    GPIO_1 RK_PB6
+ gpio-49  (                    |vsel                ) out lo    GPIO_1 RK_PC1
+ gpio-54  (                    |control-gpio        ) out hi    GPIO_1 RK_PC6
+
+gpio-56  (                    |vcc_pwr_1v8         ) out hi GPIO_1 RK_PD0
+
+GPIOs 64-95, platform/pinctrl, gpio2:
+ gpio-83  (                    |bt_default_rts      ) in  hi    GPIO_2 RK_PC3
+ gpio-91  (                    |bt_default_wake     ) in  lo    GPIO_2 RK_PD3
+
+GPIOs 96-127, platform/pinctrl, gpio3:
+ gpio-111 (                    |mdio-reset          ) out lo    GPIO_3 RK_PB7
+
+GPIOs 128-159, platform/pinctrl, gpio4:
+ gpio-133 (                    |headset_gpio        ) in  hi    GPIO_4 RK_PA5
+ gpio-134 (                    |mic_switch_gpio     ) out lo    GPIO_4 RK_PA6
+ gpio-135 (                    |audio_switch_gpio   ) out hi    GPIO_4 RK_PA7
+ gpio-153 (                    |hpd_inter           ) in  lo    GPIO_4 RK_PD1
+ gpio-154 (                    |vcc5v0_host         ) out hi    GPIO_4 RK_PD2
+ gpio-156 (                    |led_gpio            ) out hi    GPIO_4 RK_PD4
+ gpio-157 (                    |hdmi_5v_gpio        ) out hi    GPIO_4 RK_PD5
+ gpio-158 (                    |hub_rst_gpio        ) out hi    GPIO_4 RK_PD6

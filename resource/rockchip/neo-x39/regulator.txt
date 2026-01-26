@@ -1,0 +1,62 @@
+ regulator                      use open bypass voltage current     min     max
+-------------------------------------------------------------------------------
+ regulator-dummy                  0    2      0     0mV     0mA     0mV     0mV 
+    ff100000.saradc                                                 0mV     0mV
+    deviceless                                                      0mV     0mV
+ vcc1v8_s0                        0    3      0  1800mV     0mA  1800mV  1800mV 
+    ff770000.syscon:io-domains                                      0mV     0mV
+    ff770000.syscon:io-domains                                      0mV     0mV
+    deviceless                                                      0mV     0mV
+ vcc_sys                          0   16      0  5000mV     0mA  5000mV  5000mV 
+    deviceless                                                      0mV     0mV
+    vcc3v3_sys                    0    3      0  3300mV     0mA  3300mV  3300mV 
+       deviceless                                                   0mV     0mV
+       vcc3v3_s3                  0    1      0  3300mV     0mA     0mV     0mV 
+          deviceless                                                0mV     0mV
+       vcc3v3_s0                  0    1      0  3300mV     0mA     0mV     0mV 
+          deviceless                                                0mV     0mV
+    vdd_cpu_b                     0    2      0   800mV     0mA   712mV  1500mV 
+       cpu4                                                       800mV  1250mV
+       deviceless                                                   0mV     0mV
+    vdd_gpu                       0    2      0   800mV     0mA   712mV  1500mV 
+       ff9a0000.gpu                                               800mV  1500mV
+       deviceless                                                   0mV     0mV
+    vdd_center                    0    2      0   900mV     0mA   750mV  1350mV 
+       dmc                                                        900mV  1350mV
+       deviceless                                                   0mV     0mV
+    vdd_cpu_l                     0    2      0   800mV     0mA   750mV  1350mV 
+       cpu0                                                       800mV  1250mV
+       deviceless                                                   0mV     0mV
+    vcc_ddr                       0    1      0  5000mV     0mA     0mV     0mV 
+       deviceless                                                   0mV     0mV
+    vcc_1v8                       0    2      0  1800mV     0mA  1800mV  1800mV 
+       ff320000.syscon:io-domains                                     0mV     0mV
+       deviceless                                                   0mV     0mV
+    vcc1v8_dvp                    0    1      0  1800mV     0mA  1800mV  1800mV 
+       deviceless                                                   0mV     0mV
+    vcca1v8_hdmi                  0    1      0  1800mV     0mA  1800mV  1800mV 
+       deviceless                                                   0mV     0mV
+    vcca_1v8                      0    1      0  1800mV     0mA  1800mV  1800mV 
+       deviceless                                                   0mV     0mV
+    vcc_sd                        0    3      0  3300mV     0mA  1800mV  3300mV 
+       fe320000.dwmmc                                            3300mV  3300mV
+       ff770000.syscon:io-domains                                     0mV     0mV
+       deviceless                                                   0mV     0mV
+    vcc3v0_sd                     0    1      0  3000mV     0mA  3000mV  3000mV 
+       deviceless                                                   0mV     0mV
+    vcc_1v5                       0    1      0  1500mV     0mA  1500mV  1500mV 
+       deviceless                                                   0mV     0mV
+    vcca0v9_hdmi                  0    1      0   900mV     0mA   900mV   900mV 
+       deviceless                                                   0mV     0mV
+    vcc_3v0                       0    2      0  3000mV     0mA  3000mV  3000mV 
+       ff770000.syscon:io-domains                                     0mV     0mV
+       deviceless                                                   0mV     0mV
+ vcc_phy                          0    2      0     0mV     0mA     0mV     0mV 
+    fe300000.ethernet                                               0mV     0mV
+    deviceless                                                      0mV     0mV
+ vcc5v0_host                      0    3      0     0mV     0mA     0mV     0mV 
+    phy-ff770000.syscon:usb2-phy@e460.3                                     0mV     0mV
+    phy-ff770000.syscon:usb2-phy@e450.1                                     0mV     0mV
+    deviceless                                                      0mV     0mV
+ vdd_log                          0    1      0   896mV     0mA   800mV  1400mV 
+    deviceless                                                      0mV     0mV
