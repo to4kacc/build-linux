@@ -8,13 +8,16 @@
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/rk-input.h>
 #include <dt-bindings/pinctrl/rockchip.h>
+#include <dt-bindings/pwm/pwm.h>
+#include <dt-bindings/thermal/thermal.h>
+#include "dt-bindings/usb/pd.h"
 #include "rk3528.dtsi"
 #include "rk3528-linux.dtsi"
 
 / {
 	model = "Hungsun X88 TV box";
-	compatible = "hungsun,x88", "rockchip,rk3528a";
-
+	compatible = "hungsun,x88",  "rockchip,rk3528a";
+	version = "1.1";
 
 	aliases {
 		ethernet0 = &gmac0;
@@ -25,7 +28,7 @@
 	};
 
 	chosen: chosen{
-		bootargs = "earlycon=uart8250,mmio32,0xff9f0000 console=ttyS0,1500000";
+		bootargs = "earlycon=uart8250,mmio32,0xff9f0000 console=ttyFIQ0"; 
 	};
 
 
@@ -208,16 +211,16 @@
 		pinctrl-names = "default", "rts_gpio";
 		pinctrl-0 = <&uart2m1_rtsn>;
 		pinctrl-1 = <&uart2m1_gpios>;
-		BT,reset_gpio = <&gpio1 RK_PC1 GPIO_ACTIVE_HIGH>; 		//49
+		BT,reset_gpio    = <&gpio1 RK_PC1 GPIO_ACTIVE_HIGH>; 	//49
+		BT,wake_gpio     = <&gpio1 RK_PC0 GPIO_ACTIVE_HIGH>;
 		BT,wake_host_irq = <&gpio1 RK_PC2 GPIO_ACTIVE_HIGH>;	//50
-		/* BT,wake_gpio     = <&gpio1 RK_PC0 GPIO_ACTIVE_HIGH>;  */
 		status = "okay";
 	};
 
 	wireless_wlan: wireless-wlan {
 		compatible = "wlan-platdata";
 		rockchip,grf = <&grf>;
-		/* wifi_chip_type = "AIC8801"; */
+		/* wifi_chip_type = "AIC8801";  [00];	 AIC880, SV6160 */
 		pinctrl-names = "default";
 		pinctrl-0 = <&wifi_host_wake_irq>;
 		WIFI,host_wake_irq = <&gpio1 RK_PA7 GPIO_ACTIVE_HIGH>;    //GPIO_ACTIVE_HIGH 0
@@ -234,6 +237,18 @@
         status = "okay";
     };
 
+	openvfd {
+		compatible = "open,vfd";
+		dev_name = "openvfd";
+		openvfd_gpio_clk = <&gpio4 RK_PA4 GPIO_ACTIVE_HIGH>;
+		openvfd_gpio_stb = <&gpio4 RK_PA5 GPIO_ACTIVE_HIGH>;
+		openvfd_gpio_dat = <&gpio4 RK_PA6 GPIO_ACTIVE_HIGH>;
+		openvfd_chars = [04 00 01 02 03];
+		openvfd_dot_bits = [00 01 02 03 04 05 06];
+		openvfd_display_type = <0x03 0x00 0x00 0x00>;
+		status = "okay";
+	};
+
 	adc-keys {
 		status = "okay";
 		compatible = "adc-keys";
@@ -249,16 +264,16 @@
 		};
 	};
 
-		seekwcn_boot {
-			compatible = "seekwave,sv6160";
-			dma_type = <0x01>;
-			status = "okay";
-		};
+	seekwcn_boot {
+		compatible = "seekwave,sv6160";
+		dma_type = <0x01>;
+		status = "okay";
+	};
 
-		sky-storage {
-			compatible = "rockchip,hgs_vendor_storage";
-			status = "okay";
-		};
+	sky-storage {
+		compatible = "rockchip,hgs_vendor_storage";
+		status = "okay";
+	};
 
 	gpio_leds: gpio-leds {
 		compatible = "gpio-leds";
@@ -286,11 +301,11 @@
 };
 
 &pwm1 {
-	status = "okay";
+	status ="disabled";
 };
 
 &pwm2 {
-	status = "okay";
+	status ="disabled";
 };
 
 &pwm3 {
@@ -302,7 +317,7 @@
 	remote_pwm_id = <3>;
 	handle_cpu_id = <1>;
 	remote_support_psci = <0>;
- wakeup-source;
+	wakeup-source;
 	status = "okay";
 	ir_key5 {
 		rockchip,usercode = <0xf708>;
@@ -356,6 +371,18 @@
 };
 
 &cpu0 {
+	cpu-supply = <&vdd_cpu>;
+};
+
+&cpu1 {
+	cpu-supply = <&vdd_cpu>;
+};
+
+&cpu2 {
+	cpu-supply = <&vdd_cpu>;
+};
+
+&cpu3 {
 	cpu-supply = <&vdd_cpu>;
 };
 
@@ -580,9 +607,9 @@
 };
 
 &uart0 {
-	status = "okay";
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0m0_xfer>;
+	status = "disabled";
 };
 
 &uart2 {
@@ -678,12 +705,6 @@
 		uart2m1_gpios: uart2m1-gpios {
 			rockchip,pins = <1 RK_PB2 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
-		//bt_wake_gpio: bt-wake-gpio {
-		//	rockchip,pins = <&gpio1 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
-		//};
-		//bt_host_wake_irq: bt-host-wake-irq {
-		//	rockchip,pins = <&gpio1 RK_PC2 RK_FUNC_GPIO &pcfg_pull_down>;
-		//};
 	};
 
 	hym8563 {
@@ -693,3 +714,5 @@
 		};
 	};
 };
+
+
