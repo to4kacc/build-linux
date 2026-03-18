@@ -62,15 +62,15 @@ init() {
 		DEFCONFIG="${BOARD_DEFCONFIG}"
 	fi
 
-	ADDITIONAL_CONFIG="${SCRIPT_PATH}/boot/configs/${VENDOR}/${KERNEL_TYPE}/${BOARD_CODE}.config"
-	if [ -f "${ADDITIONAL_CONFIG}" ]; then
-		DEFCONFIG="${DEFCONFIG} ${BOARD_CODE}.config"
-	fi
-
 	if [ "${BOARD_INC_DEFCONFIG:-}" != "" ]; then
 		for fname in ${BOARD_INC_DEFCONFIG}; do
 			DEFCONFIG="${DEFCONFIG} ${fname}.config"
 		done
+	fi
+
+	ADDITIONAL_CONFIG="${SCRIPT_PATH}/boot/configs/${VENDOR}/${KERNEL_TYPE}/${BOARD_CODE}.config"
+	if [ -f "${ADDITIONAL_CONFIG}" ]; then
+		DEFCONFIG="${DEFCONFIG} ${BOARD_CODE}.config"
 	fi
 
 	KERNEL_CURRENT=$(git -C ${KERNEL_SRC} config remote.origin.url 2>/dev/null || echo "Archive File")
